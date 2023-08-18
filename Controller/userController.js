@@ -18,7 +18,7 @@ exports.getUser = async (req,res,next)=>{
 						console.log(err);
 					}
 					if(result == true){
-						res.send(`<script>alert('User LogIn Successfully'); window.location.href = '/login'</script>`)
+						res.send(`<script>alert('User LogIn Successfully'); window.location.href = '/expense/userDashboard'</script>`)
 					}else{
 						res.send(`<script>alert('User Not Authorized'); window.location.href = '/login'</script>`)
 					}
@@ -55,5 +55,7 @@ exports.addUser = async (req, res, next) => {
         console.log(err);
 	}
 }
+
+
 
 

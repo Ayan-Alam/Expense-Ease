@@ -1,13 +1,15 @@
 const express = require('express');
 const router =  express.Router();
-const userController = require("../Controller/userController");
+const expenseController = require("../Controller/expenseController");
 
 router.use(express.static("public"));
 
-router.get('/',userController.getIndex);
+router.get('/userDashboard',expenseController.gethomePage);
 
-router.post('/user',userController.addUser);
+router.post('/addExpense', expenseController.addExpense);
 
-router.post('/getuser',userController.getUser);
+router.get('/getExpense',expenseController.getExpense);
+
+router.delete('/deleteExpense/:id',expenseController.deleteExpense);
 
 module.exports = router;
