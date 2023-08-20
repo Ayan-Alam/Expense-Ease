@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Form</title>
+  <title>Expense-Ease 🖩</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .form-box {
@@ -24,7 +24,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <div class="container mt-5">
     <div class="form-box">
-      <form id="expense-form" action="/expense/addExpense" method="post">
+      <form id="expense-form" onsubmit="return false;">
         <div class="row mb-3">
           <div class="col">
             <label for="amount" class="form-label">Amount</label>
@@ -54,7 +54,7 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Add Expense</button>
+        <button type="submit" class="btn btn-primary" id="addlogin">Add Expense</button>
       </form>
     </div>
     <div class="mt-4 table-box">

@@ -2,6 +2,11 @@ const path = require('path');
 const Sequelize = require("sequelize");
 const user = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+function generateAccessToken(id) {
+	return jwt.sign({ userId: id },"secret-key");
+  }
 
 exports.getIndex = (req, res, next) => {
 	res.sendFile(path.join(__dirname, '../', 'public', "views", 'index.html'));
@@ -9,8 +14,8 @@ exports.getIndex = (req, res, next) => {
 
 exports.getUser = async (req,res,next)=>{
 	try{
-		const email = req.body.email;
-		const password = req.body.password;
+		const email = req.body.loginEmail;
+		const password = req.body.loginPassword;
 		await user.findOne({where : {email : email}}).then((e)=>{
 			if(e){
 				bcrypt.compare(password,e.password,(err,result)=>{
@@ -18,13 +23,23 @@ exports.getUser = async (req,res,next)=>{
 						console.log(err);
 					}
 					if(result == true){
-						res.send(`<script>alert('User LogIn Successfully'); window.location.href = '/expense/userDashboard'</script>`)
-					}else{
-						res.send(`<script>alert('User Not Authorized'); window.location.href = '/login'</script>`)
+						return res.status(200).json({
+							success: true,
+							message: "Login Successful!",
+							token: generateAccessToken(e.id),
+						  })
+						}else{
+							return res.status(404).json({
+								success: false,
+								message: "Password is incorrect!",
+							  });
 					}
 				})
 			}else{
-				res.send(`<script>alert('User Not Found'); window.location.href = '/login'</script>`)
+				return res.status(404).json({
+					success: false,
+					message: "User not Found!",
+				  });
 			}
 		})
 	}catch (err){

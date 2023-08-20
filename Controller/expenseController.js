@@ -7,7 +7,7 @@ exports.gethomePage = (req,res,next) =>{
 
 exports.getExpense = async(req,res,next)=>{
 	try {
-		const expenses = await expense.findAll();
+		const expenses = await expense.findAll({ where: { userId: req.user.id } });
 		res.json(expenses);
 	  } catch (err) {
 		console.log(err);
@@ -23,6 +23,7 @@ exports.addExpense = async (req,res,next)=>{
 			amount : amount,
 			description : description,
 			category : category,
+			userId : req.user.id,
 		})
 		res.redirect('/expense/userDashboard');
 	}catch(err){
