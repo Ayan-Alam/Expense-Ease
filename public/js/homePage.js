@@ -23,9 +23,9 @@ const expenseTableBody = document.getElementById("expense-table-body");
         })
     }).catch((err)=>{console.log(err)});
   })
-  function deleteRow(button,id) {
+  async function deleteRow(button,id) {
     const token = localStorage.getItem("token");
-    axios.delete(`http://localhost:3000/expense/deleteExpense/${id}`, { headers: { Authorization: token } })
+    await axios.delete(`http://localhost:3000/expense/deleteExpense/${id}`, { headers: { Authorization: token } })
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
   }
@@ -70,7 +70,33 @@ document.getElementById('addlogin').addEventListener('click', function(){
       });
   })
 
+document.getElementById("razorpaybtn").addEventListener('click', async function(){
+  const token = localStorage.getItem('token');
+  const response = await axios.get("http://localhost:3000/premium/premiumUser", { headers: {Authorization: token} })
+  console.log(response);
+  let options = 
+  {
+    key: response.data.key_id,
+    order_id: response.data.order.id,
+    "handler": async function(response){
+     const res = await axios.post("http://localhost:3000/premium/updateTransactionStatus",{
+        order_id: options.order_id,
+        payment_id: response.razorpay_payment_id,
+      }, { headers: { Authorization: token } 
+    }) 
+      alert("You are Premium User Now 🎉")
+      window.location.reload();
+      localStorage.setItem("token",res.data.token);
+    }
+  }
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
   
+  rzp1.on('payment-failed', function(response){
+    console.log(response);
+    alert('something went wrong')
+  })
+})
 
 
     
