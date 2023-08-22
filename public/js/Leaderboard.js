@@ -17,5 +17,19 @@ async function fetchAndPopulateLeaderboard() {
       console.error('Error fetching data:', error);
     }
   }
+  async function isPremium(){
+    const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:3000/login/ispremiumUser", {
+      headers: { Authorization: token },
+    });
+    if (res.data.ispremiumuser) {
+      LeaderboardBtn.removeAttribute("onclick");
+      LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
+      reportBtn.setAttribute("href","/Premuim/getReportsPage");
+    }else{
+  
+    }
+  }
+  document.addEventListener("DOMContentLoaded", isPremium);
   document.addEventListener('DOMContentLoaded',fetchAndPopulateLeaderboard);
   

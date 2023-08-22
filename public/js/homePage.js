@@ -39,15 +39,12 @@ document.getElementById('addlogin').addEventListener('click', function(){
   const amountValue = amount.value.trim();
   if (categoryValue == "Select Category") {
     alert("Select the Category!");
-    window.location.href ='/expense/userDashboard';
   }
   if (!descriptionValue) {
     alert("Add the Description!");
-    window.location.href ='/expense/userDashboard';
   }
   if (!parseInt(amountValue)) {
     alert("Please enter the valid amount!");
-    window.location.href ='/expense/userDashboard';
   }
   const token = localStorage.getItem("token");
   const res = axios
