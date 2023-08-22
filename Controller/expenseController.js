@@ -1,4 +1,5 @@
 const path = require('path');
+const user = require('../models/userModel');
 const expense = require('../models/expenseModel');
 
 exports.gethomePage = (req,res,next) =>{
@@ -19,6 +20,12 @@ exports.addExpense = async (req,res,next)=>{
 		const amount = req.body.amount;
 		const description = req.body.description;
 		const category = req.body.category;
+		await user.update(
+			{
+			  totalExpenses: req.user.totalExpenses + Number(amount),
+			},
+			{ where: { id: req.user.id } },
+		  );
 		await expense.create({
 			amount : amount,
 			description : description,
@@ -34,7 +41,14 @@ exports.addExpense = async (req,res,next)=>{
 exports.deleteExpense = async (req,res,next) => {
 	try{
     const id = req.params.id;
-   await expense.destroy({where: {id : id}})
+    const expense = await expense.findByPk(id);
+    await user.update(
+      {
+        totalExpenses: req.user.totalExpenses - expense.amount,
+      },
+      { where: { id: req.user.id } }
+    );
+   await expense.destroy({where: {id : id, userId: req.user.id}})
       res.sendStatus(200);
 	}catch(err){
 		console.log(err);

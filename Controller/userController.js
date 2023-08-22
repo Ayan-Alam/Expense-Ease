@@ -1,5 +1,6 @@
 const path = require('path');
 const Sequelize = require("sequelize");
+const sequelize = require('../utils/database');
 const user = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -20,6 +21,26 @@ exports.isPremium = async (req,res)=>{
 
 exports.getIndex = (req, res, next) => {
 	res.sendFile(path.join(__dirname, '../', 'public', "views", 'index.html'));
+}
+
+exports.alluser = async(req,res,next)=>{
+	try {
+	user.findAll({
+		attributes: [
+		  [sequelize.col("name"), "name"],
+		  [sequelize.col("totalExpenses"), "totalExpenses"],
+		],
+		order: [[sequelize.col("totalExpenses"), "DESC"]],
+	  }).then((users) => {
+		const result = users.map((user) => ({
+		  name: user.getDataValue("name"),
+		  totalExpenses: user.getDataValue("totalExpenses"),
+		}));
+		res.send(JSON.stringify(result));
+	  });
+	} catch (error) {
+	  console.log(error);
+	}
 }
 
 exports.getUser = async (req,res,next)=>{

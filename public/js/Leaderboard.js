@@ -1,20 +1,15 @@
 async function fetchAndPopulateLeaderboard() {
     try {
-      const response = await axios.get({N}); 
+      const response = await axios.get("http://localhost:3000/login/alluser"); 
       const leaderboardData = response.data; 
-  
       const leaderboardBody = document.getElementById('leaderboard-body');
-  
-      
       leaderboardBody.innerHTML = '';
-  
-      
       leaderboardData.forEach((entry, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <th scope="row">${index + 1}</th>
-          <td>${entry.Name}</td>
-          <td>${entry.Expenses}</td>
+          <td>${entry.name}</td>
+          <td>${entry.totalExpenses}</td>
         `;
         leaderboardBody.appendChild(row);
       });
