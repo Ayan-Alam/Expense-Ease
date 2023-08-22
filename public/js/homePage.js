@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded',function(){
 const expenseForm = document.getElementById("expense-form");
 const token = localStorage.getItem("token");
 const expenseTableBody = document.getElementById("expense-table-body");
-    axios.get("http://localhost:3000/expense/getExpense",{ headers: { Authorization: token } })
+   axios.get("http://localhost:3000/expense/getExpense",{ headers: { Authorization: token } })
     .then((res)=>{console.log(res.data)
         res.data.forEach((e)=>{
             const amount = e.amount;
@@ -70,7 +70,7 @@ document.getElementById('addlogin').addEventListener('click', function(){
       });
   })
 
-document.getElementById("razorpaybtn").addEventListener('click', async function(){
+async function buyPremium(){
   const token = localStorage.getItem('token');
   const response = await axios.get("http://localhost:3000/premium/premiumUser", { headers: {Authorization: token} })
   console.log(response);
@@ -96,7 +96,24 @@ document.getElementById("razorpaybtn").addEventListener('click', async function(
     console.log(response);
     alert('something went wrong')
   })
-})
+}
 
+async function isPremium(){
+  const token = localStorage.getItem("token");
+  const res = await axios.get("http://localhost:3000/login/ispremiumUser", {
+    headers: { Authorization: token },
+  });
+  if (res.data.ispremiumuser) {
+    razorpaybtn.innerHTML ="👑Premium Member";
+    reportBtn.removeAttribute("onclick");
+    LeaderboardBtn.removeAttribute("onclick");
+    LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
+    reportBtn.setAttribute("href","/Premuim/getReportsPage");
+    razorpaybtn.removeEventListener("click", buyPremium);
+  }else{
 
+  }
+}
+document.getElementById("razorpaybtn").addEventListener('click',buyPremium);
+document.addEventListener("DOMContentLoaded", isPremium);
     

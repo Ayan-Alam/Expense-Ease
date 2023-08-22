@@ -7,6 +7,16 @@ const jwt = require('jsonwebtoken');
 function generateAccessToken(id) {
 	return jwt.sign({ userId: id },"secret-key");
   }
+  
+exports.isPremium = async (req,res)=>{
+	try {
+	  if (req.user.ispremiumuser) {
+		return res.json({ ispremiumuser: true });
+	  }
+	} catch (error) {
+	  console.log(error);
+	}
+}
 
 exports.getIndex = (req, res, next) => {
 	res.sendFile(path.join(__dirname, '../', 'public', "views", 'index.html'));

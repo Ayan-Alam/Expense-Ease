@@ -1,3 +1,4 @@
+const path = require('path');
 const Razorpay = require("razorpay");
 const Order = require("../models/OrderModel");
 const userController = require("./userController");
@@ -6,7 +7,6 @@ const jwt = require('jsonwebtoken');
 function generateAccessToken(id) {
 	return jwt.sign({ userId: id },"secret-key");
   }
-
 
 exports.purchasePremium = async (req, res) => {
   try {
@@ -43,7 +43,7 @@ exports.updateTransactionStatus = async(req, res) => {
       paymentid: payment_id,
       status: "SUCCESSFUL",
     });
-    const promise2 = req.user.update({ isPremiumUser: true });
+    const promise2 = req.user.update({ ispremiumuser: true });
 
     Promise.all([promise1, promise2])
       .then(() => {
@@ -58,6 +58,10 @@ exports.updateTransactionStatus = async(req, res) => {
       });
   } catch (err) {
     console.log(err);
-    res.status(403).json({ error: err, message: "Sometghing went wrong" });
+    res.status(403).json({ error: err, message: "Something went wrong" });
   }
+}
+
+exports.getLeaderBoard = (req,res,next)=>{
+  res.sendFile(path.join(__dirname, '../', 'public', "views", 'Leaderboard.html'))
 }
