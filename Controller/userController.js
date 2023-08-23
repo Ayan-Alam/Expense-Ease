@@ -4,7 +4,7 @@ const sequelize = require('../utils/database');
 const user = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Sbi = require('sib-api-v3-sdk');
+
 
 function generateAccessToken(id) {
 	return jwt.sign({ userId: id },"secret-key");
@@ -22,14 +22,6 @@ exports.isPremium = async (req,res)=>{
 
 exports.getIndex = (req, res, next) => {
 	res.sendFile(path.join(__dirname, '../', 'public', "views", 'index.html'));
-}
-
-exports.getPassword = (req,res,next)=>{
-	res.sendFile(path.join(__dirname, '../', 'public', "views", 'ForgotPassword.html'));
-}
-
-exports.resetPassword = async(req,res,next)=>{
-	res.send(`<script>alert('test');</script>`)
 }
 
 exports.alluser = async(req,res,next)=>{
