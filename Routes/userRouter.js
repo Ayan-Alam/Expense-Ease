@@ -7,6 +7,10 @@ router.use(express.static("public"));
 
 router.get('/',userController.getIndex);
 
+router.get('/forgotPassword',userController.getPassword);
+
+router.post('/resetPassword',userController.resetPassword);
+
 router.post('/user',userController.addUser);
 
 router.post('/getuser',userController.getUser);

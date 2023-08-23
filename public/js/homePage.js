@@ -105,7 +105,7 @@ async function isPremium(){
     reportBtn.removeAttribute("onclick");
     LeaderboardBtn.removeAttribute("onclick");
     LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
-    reportBtn.setAttribute("href","/Premuim/getReportsPage");
+    reportBtn.setAttribute("href","/premuim/getReportsPage");
     razorpaybtn.removeEventListener("click", buyPremium);
   }else{
 
