@@ -3,6 +3,8 @@ const Razorpay = require("razorpay");
 const Order = require("../models/OrderModel");
 const userController = require("./userController");
 const jwt = require('jsonwebtoken');
+const expense = require('../models/expenseModel');
+const { Op } = require("sequelize");
 
 function generateAccessToken(id) {
 	return jwt.sign({ userId: id },"secret-key");
@@ -65,3 +67,41 @@ exports.updateTransactionStatus = async(req, res) => {
 exports.getLeaderBoard = (req,res,next)=>{
   res.sendFile(path.join(__dirname, '../', 'public', "views", 'Leaderboard.html'))
 }
+
+exports.getReportPage = (req,res,next)=>{
+  res.sendFile(path.join(__dirname, '../', 'public', "views", 'Report.html'))
+}
+
+exports.dailyReports = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const date = req.body.date;
+    const expenses = await expense.findAll({
+      where: { date: date, userId: req.user.id },
+    });
+    return res.send(expenses);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+exports.monthlyReports = async (req, res, next) => {
+  try {
+    const month = req.body.month;
+
+    const expenses = await expense.findAll({
+      where: {
+        date: {
+          [Op.like]: `%-${month}-%`,
+        },
+        userId: req.user.id,
+      },
+      raw: true,
+    });
+
+    return res.send(expenses);
+  } catch (error) {
+    console.log(error);
+  }
+};

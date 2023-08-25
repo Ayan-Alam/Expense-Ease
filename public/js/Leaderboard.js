@@ -25,7 +25,7 @@ async function fetchAndPopulateLeaderboard() {
     if (res.data.ispremiumuser) {
       LeaderboardBtn.removeAttribute("onclick");
       LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
-      reportBtn.setAttribute("href","/Premuim/getReportsPage");
+      reportBtn.setAttribute("href","/premium/getReport");
     }else{
   
     }

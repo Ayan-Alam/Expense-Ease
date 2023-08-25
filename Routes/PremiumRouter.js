@@ -11,4 +11,10 @@ router.post('/updateTransactionStatus',userAuthentication,premiumController.upda
 
 router.get('/getLeaderBoardPage',premiumController.getLeaderBoard);
 
+router.get('/getReport',premiumController.getReportPage);
+
+router.post('/dailyReports',userAuthentication,premiumController.dailyReports);
+
+router.post('/monthlyReports',userAuthentication,premiumController.monthlyReports);
+
 module.exports = router;

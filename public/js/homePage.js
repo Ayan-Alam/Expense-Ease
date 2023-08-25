@@ -3,12 +3,12 @@ const expenseForm = document.getElementById("expense-form");
 const token = localStorage.getItem("token");
 const expenseTableBody = document.getElementById("expense-table-body");
    axios.get("http://localhost:3000/expense/getExpense/1",{ headers: { Authorization: token } })
-    .then((res)=>{console.log(res.data)
+    .then((res)=>{
         res.data.expenses.forEach((e)=>{
             const amount = e.amount;
             const description = e.description;
             const category = e.category;
-            const date = e.createdAt.slice(0,10);
+            const date = e.date;
             const newRow = `
             <tr>
               <td>${date}</td>
@@ -51,12 +51,11 @@ const expenseTableBody = document.getElementById("expense-table-body");
         `http://localhost:3000/expense/getExpense/${pageNo}`,
         { headers: { Authorization: token } }
       );
-      console.log(res.data.expenses);
         res.data.expenses.forEach((e)=>{
             const amount = e.amount;
             const description = e.description;
             const category = e.category;
-            const date = e.createdAt.slice(0,10);
+            const date = e.date;
             const newRow = `
             <tr>
               <td>${date}</td>
@@ -80,6 +79,7 @@ document.getElementById('addlogin').addEventListener('click', function(){
   const categoryValue = category.value;
   const descriptionValue = description.value.trim();
   const amountValue = amount.value.trim();
+  
   if (categoryValue == "Select Category") {
     alert("Select the Category!");
   }
@@ -89,11 +89,23 @@ document.getElementById('addlogin').addEventListener('click', function(){
   if (!parseInt(amountValue)) {
     alert("Please enter the valid amount!");
   }
+
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+
+  const dateStr = `${formattedDay}-${formattedMonth}-${year}`;
+  
   const token = localStorage.getItem("token");
   const res = axios
       .post(
         "http://localhost:3000/expense/addExpense",
         {
+          date: dateStr,
           category: categoryValue,
           description: descriptionValue,
           amount: parseInt(amountValue),
@@ -147,7 +159,7 @@ async function isPremium(){
     reportBtn.removeAttribute("onclick");
     LeaderboardBtn.removeAttribute("onclick");
     LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
-    reportBtn.setAttribute("href","/premuim/getReportsPage");
+    reportBtn.setAttribute("href","/premium/getReport");
     razorpaybtn.removeEventListener("click", buyPremium);
   }else{
 
@@ -155,4 +167,3 @@ async function isPremium(){
 }
 document.getElementById("razorpaybtn").addEventListener('click',buyPremium);
 document.addEventListener("DOMContentLoaded", isPremium);
-    

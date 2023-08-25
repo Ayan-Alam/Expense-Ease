@@ -7,7 +7,7 @@ router.use(express.static("public"));
 
 router.get('/userDashboard',expenseController.gethomePage);
 
-router.post('/addExpense',userAuthentication,expenseController.addExpense);
+router.post('/addExpense', userAuthentication,expenseController.addExpense);
 
 router.get('/getExpense/:page', userAuthentication,expenseController.getExpensePage);
 

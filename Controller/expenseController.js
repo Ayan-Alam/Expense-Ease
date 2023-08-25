@@ -39,6 +39,7 @@ exports.getExpensePage = async (req,res,next)=>{
 exports.addExpense = async (req,res,next)=>{
 	const t = await sequelize.transaction();
 	try{
+		const date = req.body.date;
 		const amount = req.body.amount;
 		const description = req.body.description;
 		const category = req.body.category;
@@ -50,6 +51,7 @@ exports.addExpense = async (req,res,next)=>{
 			{ transaction: t }
 		  );
 		await expense.create({
+			date : date,
 			amount : amount,
 			description : description,
 			category : category,
