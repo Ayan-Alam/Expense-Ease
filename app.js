@@ -6,6 +6,7 @@ const cors = require('cors');
 const sequelize = require('./utils/database');
 const compression = require('compression');
 const morgan = require('morgan');
+const dotenv = require("dotenv");
 
 const userRouter = require('./Routes/userRouter');
 const expenseRouter = require('./Routes/expenseRouter');
@@ -31,6 +32,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.use(cors());
+dotenv.config();
 
 app.use('/login',userRouter);
 app.use('/post',userRouter);
