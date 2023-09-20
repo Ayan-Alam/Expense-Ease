@@ -165,5 +165,13 @@ async function isPremium(){
 
   }
 }
+document.getElementById("logout").addEventListener('click', async function(){
+  try {
+    localStorage.clear();
+    window.location.href = "/login";
+  } catch (error) {
+    console.log(error);
+  }
+})
 document.getElementById("razorpaybtn").addEventListener('click',buyPremium);
 document.addEventListener("DOMContentLoaded", isPremium);

@@ -28,11 +28,14 @@
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login/">Log out</a>
+            <a class="nav-link" id="logout">Log out</a>
           </li>
         </ul>
       </div>
 </nav>
+<div class="col-md-2 mb-2">
+  <input type="submit" class="btn btn-secondary btn-block" id="dailyDownload" value="Download">
+</div>  
 <div class="container mt-5">
     <h2>Daily Report 🗓️</h2>
     <form class="d-flex align-items-end"">
@@ -42,13 +45,9 @@
         </div>
         <div class="col-md-2 mb-2">
             <input type="submit" class="btn btn-primary btn-block" value="Show" id="dailybtn">
-        </div>
-        <div class="col-md-2 mb-2">
-          <input type="submit" class="btn btn-secondary btn-block" id="dailyDownload" value="Download">
-      </div>        
+        </div>      
     </form>
 </div>
-
 <div class="container mt-5">
     <table class="table">
         <thead>
@@ -76,9 +75,6 @@
             <div class="col-md-2 mb-2">
                 <input type="submit" class="btn btn-primary btn-block" value="Show" id="monthbtn">
             </div>
-            <div class="col-md-2 mb-2">
-              <input type="submit" class="btn btn-secondary btn-block" id="monthDownload" value="Download">
-          </div>
         </form>    
 </div>
 

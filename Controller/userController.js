@@ -1,13 +1,15 @@
 const path = require('path');
 const Sequelize = require("sequelize");
 const sequelize = require('../utils/database');
+const expense = require('../models/expenseModel');
 const user = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const AWS = require('aws-sdk');
 
 
 function generateAccessToken(id) {
-	return jwt.sign({ userId: id },"secret-key");
+	return jwt.sign({ userId: id },process.env.TOKEN);
   }
   
 exports.isPremium = async (req,res)=>{
@@ -100,6 +102,46 @@ exports.addUser = async (req, res, next) => {
 	}).catch((err) => console.log(err));
 	} catch (err) {
         console.log(err);
+	}
+}
+
+function uploadtoS3(data,filename){
+	const BUCKET_NAME = process.env.BUCKET_NAME;
+	const IAM_USER_KEY = process.env.IAM_USER_KEY;
+	const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
+
+	let s3bucket = new AWS.S3({
+		accessKeyId : IAM_USER_KEY,
+		secretAccessKey : IAM_USER_SECRET,
+	})
+		var params = {
+			Bucket : BUCKET_NAME,
+			Key : filename,
+			Body : data,
+			ACL : 'public-read'
+		}
+	return new Promise((resolve,reject)=>{
+		s3bucket.upload(params,(err,s3response)=>{
+			if(err){
+				console.log(err);
+				reject(err);
+			}else{
+				console.log('success',s3response);
+				resolve(s3response.Location);
+			}
+		})
+	})
+}
+
+exports.download = async (req,res,next)=>{
+	try{
+	const expenses = await expense.findAll({where: { userId: req.user.id }});
+	const stringifyExpense = JSON.stringify(expenses);
+	const filename = 'expense.txt';
+	const fileURL = await uploadtoS3(stringifyExpense,filename);
+	res.status(200).json({fileURL,success:true})
+	}catch (err){
+		res.status(500).json({fileURL:'',success:false});
 	}
 }
 

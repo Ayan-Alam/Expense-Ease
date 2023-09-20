@@ -15,4 +15,6 @@ router.get('/alluser',userController.alluser);
 
 router.get('/ispremiumUser',userAuthentication,userController.isPremium);
 
+router.get('/download-report',userAuthentication,userController.download);
+
 module.exports = router;

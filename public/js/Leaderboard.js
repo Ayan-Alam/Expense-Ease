@@ -30,6 +30,14 @@ async function fetchAndPopulateLeaderboard() {
   
     }
   }
+  document.getElementById("logout").addEventListener('click', async function(){
+    try {
+      localStorage.clear();
+      window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+    }
+  })
   document.addEventListener("DOMContentLoaded", isPremium);
   document.addEventListener('DOMContentLoaded',fetchAndPopulateLeaderboard);
   

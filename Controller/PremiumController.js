@@ -7,7 +7,7 @@ const expense = require('../models/expenseModel');
 const { Op } = require("sequelize");
 
 function generateAccessToken(id) {
-	return jwt.sign({ userId: id },"secret-key");
+	return jwt.sign({ userId: id },process.env.TOKEN);
   }
 
 exports.purchasePremium = async (req, res) => {

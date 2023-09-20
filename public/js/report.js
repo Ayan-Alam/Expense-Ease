@@ -157,6 +157,31 @@ async function getMonthlyReport(e) {
     console.log(error);
   }
 }
+document.getElementById("logout").addEventListener('click', async function(){
+  try {
+    localStorage.clear();
+    window.location.href = "/login";
+  } catch (error) {
+    console.log(error);
+  }
+})
+document.getElementById('dailyDownload').addEventListener('click',async function(){
+  try{
+  const token = localStorage.getItem("token");
+  const res = await axios.get("http://localhost:3000/login/download-report", { headers: { "authorization": token } })
+            if (res.status == 200) {
+                var a = document.createElement("a");
+                a.href = res.data.fileURL;
+                a.download = 'myexpenses.csv';
+                a.click();
+            }else{
+              throw new Error(res.data.message)
+            }
+            
+  }catch (err){
+    console.log(err);
+  }
+});
 document.addEventListener("DOMContentLoaded", isPremium);
 document.getElementById("monthbtn").addEventListener('click',getMonthlyReport);
 document.getElementById("dailybtn").addEventListener('click',getDailyReport);
