@@ -1,6 +1,6 @@
 async function fetchAndPopulateLeaderboard() {
     try {
-      const response = await axios.get("http://localhost:3000/login/alluser"); 
+      const response = await axios.get("http://localhost:3000/users"); 
       const leaderboardData = response.data; 
       const leaderboardBody = document.getElementById('leaderboard-body');
       leaderboardBody.innerHTML = '';
@@ -19,13 +19,13 @@ async function fetchAndPopulateLeaderboard() {
   }
   async function isPremium(){
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://localhost:3000/login/ispremiumUser", {
+    const res = await axios.get("http://localhost:3000/users/isPremium", {
       headers: { Authorization: token },
     });
     if (res.data.ispremiumuser) {
       LeaderboardBtn.removeAttribute("onclick");
-      LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
-      reportBtn.setAttribute("href","/premium/getReport");
+      LeaderboardBtn.setAttribute("href","/leaderboard");
+      reportBtn.setAttribute("href","/reports");
     }else{
   
     }
@@ -33,7 +33,7 @@ async function fetchAndPopulateLeaderboard() {
   document.getElementById("logout").addEventListener('click', async function(){
     try {
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }

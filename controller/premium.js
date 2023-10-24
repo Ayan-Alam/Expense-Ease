@@ -1,7 +1,7 @@
 const path = require('path');
 const Razorpay = require("razorpay");
 const Order = require("../models/OrderModel");
-const userController = require("./userController");
+const userController = require("./user");
 const jwt = require('jsonwebtoken');
 const expense = require('../models/expenseModel');
 const { Op } = require("sequelize");
@@ -64,7 +64,7 @@ exports.updateTransactionStatus = async(req, res) => {
   }
 }
 
-exports.getLeaderBoard = (req,res,next)=>{
+exports.getLeaderboardPage = (req,res,next)=>{
   res.sendFile(path.join(__dirname, '../', 'public', "views", 'Leaderboard.html'))
 }
 

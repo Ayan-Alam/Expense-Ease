@@ -3,11 +3,11 @@ const user = require('../models/userModel');
 const expense = require('../models/expenseModel');
 const sequelize = require('../utils/database');
 
-exports.gethomePage = (req,res,next) =>{
+exports.getDashboard = (req,res,next) =>{
 	res.sendFile(path.join(__dirname, '../', 'public', "views", 'homePage.html'));
 }
 
-exports.getExpense = async(req,res,next)=>{
+exports.getExpenses = async(req,res,next)=>{
 	try {
 		const expenses = await expense.findAll({ where: { userId: req.user.id } });
 		res.json(expenses);
@@ -16,7 +16,7 @@ exports.getExpense = async(req,res,next)=>{
 	  }
 }
 
-exports.getExpensePage = async (req,res,next)=>{
+exports.getExpensesPage = async (req,res,next)=>{
 	try {
 		const pageNo = req.params.page;
 		const limit = 5;
@@ -58,7 +58,7 @@ exports.addExpense = async (req,res,next)=>{
 			userId : req.user.id,
 		}).then((result) => {
 			res.status(200);
-			res.redirect('/expense/userDashboard');
+			res.redirect('/dashboard');
 		  })
 		  .catch((err) => {
 			console.log(err);

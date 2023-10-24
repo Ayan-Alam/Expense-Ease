@@ -6,13 +6,13 @@ const tbodyMonthly = document.getElementById('monthlyExpensesTable');
 const tfootMonthly = document.getElementById('tfootMonthly');
 async function isPremium() {
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://localhost:3000/login/ispremiumUser", {
+    const res = await axios.get("http://localhost:3000/users/isPremium", {
       headers: { Authorization: token },
     });
     if (res.data.ispremiumuser) {
       LeaderboardBtn.removeAttribute("onclick");
-      LeaderboardBtn.setAttribute("href","/premium/getLeaderBoardPage");
-      reportBtn.setAttribute("href","/premium/getReport");
+      LeaderboardBtn.setAttribute("href","/leaderboard");
+      reportBtn.setAttribute("href","/reports");
     }else{
   
     }
@@ -31,7 +31,7 @@ async function getDailyReport(e) {
   
       let totalAmount = 0;
       const res = await axios.post(
-        "http://localhost:3000/premium/dailyReports",
+        "http://localhost:3000/reports/daily",
         {
           date: formattedDate,
         },
@@ -99,7 +99,7 @@ async function getMonthlyReport(e) {
 
     let totalAmount = 0;
     const res = await axios.post(
-      "http://localhost:3000/premium/monthlyReports",
+      "http://localhost:3000/reports/monthly",
       {
         month: formattedMonth,
       },
@@ -160,7 +160,7 @@ async function getMonthlyReport(e) {
 document.getElementById("logout").addEventListener('click', async function(){
   try {
     localStorage.clear();
-    window.location.href = "/login";
+    window.location.href = "/";
   } catch (error) {
     console.log(error);
   }
@@ -168,7 +168,7 @@ document.getElementById("logout").addEventListener('click', async function(){
 document.getElementById('dailyDownload').addEventListener('click',async function(){
   try{
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://localhost:3000/login/download-report", { headers: { "authorization": token } })
+  const res = await axios.get("http://localhost:3000/download-report", { headers: { "authorization": token } })
             if (res.status == 200) {
                 var a = document.createElement("a");
                 a.href = res.data.fileURL;

@@ -18,12 +18,12 @@ document.getElementById('loginbtn').addEventListener('click', function(){
     loginPassword: loginPassword.value,
 };
 axios
-.post("http://localhost:3000/post/getuser", loginDetails)
+.post("http://localhost:3000/user", loginDetails)
 .then((result) => {
   console.log(result);
   alert('User LogIn Successfully');
   localStorage.setItem("token", result.data.token);
-  window.location.href ='/expense/userDashboard';
+  window.location.href ='/dashboard';
 })
 .catch((error) => {
   if (error.response) {

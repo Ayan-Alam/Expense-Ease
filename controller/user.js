@@ -81,14 +81,14 @@ exports.getUser = async (req,res,next)=>{
 	}
 }
 
-exports.addUser = async (req, res, next) => {
+exports.createUser = async (req, res, next) => {
 	try {
 		const name = req.body.name;
 		const email = req.body.email;
 		const password = req.body.password;
 		await user.findOne({where : {email : email}}).then((users) =>{
 			if (users){
-				res.send(`<script>alert('User Already Exist'); window.location.href = '/login'</script>`)
+				res.send(`<script>alert('User Already Exist'); window.location.href = '/'</script>`)
 			} else {
 				bcrypt.hash(password,10,async(err,hash)=>{
 					await user.create({
@@ -96,7 +96,7 @@ exports.addUser = async (req, res, next) => {
 						email: email,
 						password: hash,
 					})
-					res.send(`<script>alert('User Created Successfully'); window.location.href = '/login'</script>`);
+					res.send(`<script>alert('User Created Successfully'); window.location.href = '/'</script>`);
 				})
 			}
 	}).catch((err) => console.log(err));
@@ -133,7 +133,7 @@ function uploadtoS3(data,filename){
 	})
 }
 
-exports.download = async (req,res,next)=>{
+exports.downloadReport = async (req,res,next)=>{
 	try{
 	const expenses = await expense.findAll({where: { userId: req.user.id }});
 	const stringifyExpense = JSON.stringify(expenses);

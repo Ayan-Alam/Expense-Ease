@@ -10,7 +10,7 @@ const hashPassword = async (password) => {
 	return await bcrypt.hash(password, saltRounds);
   };
 
-exports.resetPasswordPage = async (req, res, next) => {
+exports.displayResetPasswordPage = async (req, res, next) => {
 	try {
 	  res
 		.status(200)
@@ -22,11 +22,11 @@ exports.resetPasswordPage = async (req, res, next) => {
 	}
   };
 
-exports.getPassword = (req,res,next)=>{
+exports.getResetPasswordPage = (req,res,next)=>{
 	res.sendFile(path.join(__dirname, '../', 'public', "views", 'ForgotPassword.html'));
 }
 
-exports.sendMail = async(req,res,next)=>{
+exports.sendPasswordEmail = async(req,res,next)=>{
 	try {
 		const email = req.body.email;
 		const requestId = uuidv4();
@@ -64,7 +64,7 @@ exports.sendMail = async(req,res,next)=>{
 		  subject: "Reset Password",
 		  textContent: "Link Below",
 		  htmlContent: `<h3>This message is to confirm that a request to change your password has been initiated on your account. If you did not initiate this request, please disregard this email.</h3>
-		  <a href="http://localhost:3000/password/resetPasswordPage/{{params.requestId}}"> Click Here</a>`,
+		  <a href="http://localhost:3000/password/reset/{{params.requestId}}"> Click Here</a>`,
 		  params: {
 			requestId: requestId,
 		  },
