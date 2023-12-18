@@ -74,7 +74,6 @@ exports.getReportPage = (req,res,next)=>{
 
 exports.dailyReports = async (req, res, next) => {
   try {
-    console.log(req.body);
     const date = req.body.date;
     const expenses = await expense.findAll({
       where: { date: date, userId: req.user.id },
