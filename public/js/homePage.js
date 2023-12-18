@@ -1,8 +1,9 @@
-document.addEventListener('DOMContentLoaded',function(){
+function showExpense(){
 const expenseForm = document.getElementById("expense-form");
 const token = localStorage.getItem("token");
 const expenseTableBody = document.getElementById("expense-table-body");
-   axios.get("http://localhost:3000/expenses/1",{ headers: { Authorization: token } })
+expenseTableBody.innerHTML = "";
+   axios.get("expenses/1",{ headers: { Authorization: token } })
     .then((res)=>{
         res.data.expenses.forEach((e)=>{
             const amount = e.amount;
@@ -22,6 +23,7 @@ const expenseTableBody = document.getElementById("expense-table-body");
          expenseForm.reset();
         })
         const ul = document.getElementById("paginationUL");
+        ul.innerHTML = "";
          for (let i = 1; i <= res.data.totalPages; i++) {
            const li = document.createElement("li");
            const a = document.createElement("a");
@@ -34,10 +36,10 @@ const expenseTableBody = document.getElementById("expense-table-body");
            a.addEventListener("click", paginationbtn);
          }
     }).catch((err)=>{console.log(err)});
-  })
+  }
   async function deleteRow(button,id) {
     const token = localStorage.getItem("token");
-    await axios.delete(`http://localhost:3000/expenses/${id}`, { headers: { Authorization: token } })
+    await axios.delete(`expenses/${id}`, { headers: { Authorization: token } })
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
   }
@@ -48,7 +50,7 @@ const expenseTableBody = document.getElementById("expense-table-body");
       const token = localStorage.getItem("token");
       expenseTableBody.innerHTML = "";
       const res = await axios.get(
-        `http://localhost:3000/expenses/${pageNo}`,
+        `expenses/${pageNo}`,
         { headers: { Authorization: token } }
       );
         res.data.expenses.forEach((e)=>{
@@ -103,7 +105,7 @@ document.getElementById('addlogin').addEventListener('click', function(){
   const token = localStorage.getItem("token");
   const res = axios
       .post(
-        "http://localhost:3000/expenses",
+        "expenses",
         {
           date: dateStr,
           category: categoryValue,
@@ -113,7 +115,7 @@ document.getElementById('addlogin').addEventListener('click', function(){
         { headers: { Authorization: token } }
       ) .then((res) => {
         if (res.status == 200) {
-          window.location.reload();
+          showExpense();
         }
       })
       .catch((err) => {
@@ -123,14 +125,14 @@ document.getElementById('addlogin').addEventListener('click', function(){
 
 async function buyPremium(){
   const token = localStorage.getItem('token');
-  const response = await axios.get("http://localhost:3000/premium", { headers: {Authorization: token} })
+  const response = await axios.get("premium", { headers: {Authorization: token} })
   console.log(response);
   let options = 
   {
     key: response.data.key_id,
     order_id: response.data.order.id,
     "handler": async function(response){
-     const res = await axios.post("http://localhost:3000/transactions",{
+     const res = await axios.post("transactions",{
         order_id: options.order_id,
         payment_id: response.razorpay_payment_id,
       }, { headers: { Authorization: token } 
@@ -151,7 +153,7 @@ async function buyPremium(){
 
 async function isPremium(){
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://localhost:3000/users/isPremium", {
+  const res = await axios.get("users/isPremium", {
     headers: { Authorization: token },
   });
   if (res.data.ispremiumuser) {
@@ -174,4 +176,5 @@ document.getElementById("logout").addEventListener('click', async function(){
   }
 })
 document.getElementById("razorpaybtn").addEventListener('click',buyPremium);
+document.addEventListener("DOMContentLoaded", showExpense);
 document.addEventListener("DOMContentLoaded", isPremium);

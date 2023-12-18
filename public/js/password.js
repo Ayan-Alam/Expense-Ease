@@ -1,7 +1,7 @@
 document.getElementById("forgotPassword").addEventListener('click',async function(){
     try {
         const email = document.getElementById("email").value;
-        const res = await axios.post("http://localhost:3000/password/email", {
+        const res = await axios.post("password/email", {
           email: email,
         });
         alert(res.data.message);

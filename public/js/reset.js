@@ -2,7 +2,7 @@ document.getElementById("resetPassword").addEventListener('click',async function
     try {
       const newPassword = document.getElementById("newPassword").value;
       const res = await axios.post(
-        "http://localhost:3000/password/reset",
+        "password/reset",
         {
           password: newPassword,
         }

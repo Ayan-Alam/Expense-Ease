@@ -6,7 +6,7 @@ const user = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const AWS = require('aws-sdk');
-
+const Papa = require("papaparse");
 
 function generateAccessToken(id) {
 	return jwt.sign({ userId: id },process.env.TOKEN);
@@ -136,9 +136,13 @@ function uploadtoS3(data,filename){
 exports.downloadReport = async (req,res,next)=>{
 	try{
 	const expenses = await expense.findAll({where: { userId: req.user.id }});
-	const stringifyExpense = JSON.stringify(expenses);
-	const filename = 'expense.txt';
-	const fileURL = await uploadtoS3(stringifyExpense,filename);
+	const formattedExpenses = expenses.map(expense => expense.dataValues);
+	const csvString = Papa.unparse(formattedExpenses, {
+		header: true,
+	  });
+	console.log(csvString);
+	const filename = 'expense.csv';
+	const fileURL = await uploadtoS3(csvString,filename);
 	res.status(200).json({fileURL,success:true})
 	}catch (err){
 		res.status(500).json({fileURL:'',success:false});

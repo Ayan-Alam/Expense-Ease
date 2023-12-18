@@ -64,7 +64,7 @@ exports.sendPasswordEmail = async(req,res,next)=>{
 		  subject: "Reset Password",
 		  textContent: "Link Below",
 		  htmlContent: `<h3>This message is to confirm that a request to change your password has been initiated on your account. If you did not initiate this request, please disregard this email.</h3>
-		  <a href="http://localhost:3000/password/reset/{{params.requestId}}"> Click Here</a>`,
+		  <a href="${process.env.WEBSITE}/password/reset/{{params.requestId}}"> Click Here</a>`,
 		  params: {
 			requestId: requestId,
 		  },

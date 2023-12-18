@@ -1,6 +1,6 @@
 async function fetchAndPopulateLeaderboard() {
     try {
-      const response = await axios.get("http://localhost:3000/users"); 
+      const response = await axios.get("users"); 
       const leaderboardData = response.data; 
       const leaderboardBody = document.getElementById('leaderboard-body');
       leaderboardBody.innerHTML = '';
@@ -19,7 +19,7 @@ async function fetchAndPopulateLeaderboard() {
   }
   async function isPremium(){
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://localhost:3000/users/isPremium", {
+    const res = await axios.get("users/isPremium", {
       headers: { Authorization: token },
     });
     if (res.data.ispremiumuser) {

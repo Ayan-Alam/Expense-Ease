@@ -6,7 +6,7 @@ const tbodyMonthly = document.getElementById('monthlyExpensesTable');
 const tfootMonthly = document.getElementById('tfootMonthly');
 async function isPremium() {
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://localhost:3000/users/isPremium", {
+    const res = await axios.get("users/isPremium", {
       headers: { Authorization: token },
     });
     if (res.data.ispremiumuser) {
@@ -31,7 +31,7 @@ async function getDailyReport(e) {
   
       let totalAmount = 0;
       const res = await axios.post(
-        "http://localhost:3000/reports/daily",
+        "reports/daily",
         {
           date: formattedDate,
         },
@@ -99,7 +99,7 @@ async function getMonthlyReport(e) {
 
     let totalAmount = 0;
     const res = await axios.post(
-      "http://localhost:3000/reports/monthly",
+      "reports/monthly",
       {
         month: formattedMonth,
       },
@@ -168,7 +168,7 @@ document.getElementById("logout").addEventListener('click', async function(){
 document.getElementById('dailyDownload').addEventListener('click',async function(){
   try{
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://localhost:3000/download-report", { headers: { "authorization": token } })
+  const res = await axios.get("download-report", { headers: { "authorization": token } })
             if (res.status == 200) {
                 var a = document.createElement("a");
                 a.href = res.data.fileURL;

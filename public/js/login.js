@@ -18,7 +18,7 @@ document.getElementById('loginbtn').addEventListener('click', function(){
     loginPassword: loginPassword.value,
 };
 axios
-.post("http://localhost:3000/user", loginDetails)
+.post("user", loginDetails)
 .then((result) => {
   console.log(result);
   alert('User LogIn Successfully');
